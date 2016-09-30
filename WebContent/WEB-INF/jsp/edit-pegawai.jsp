@@ -9,34 +9,51 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form:form>
+<center>
+	<form:form method="POST" action="/ClientServlet2/pegawai/update" enctype="multipart/form-data">
 		<table>
 			<tr>
-				<td><form:label path="nama">Nama</form:label> </td>
+				<td><form:label path="nama">Nama</form:label></td>
 				<td><form:input path="nama" value="${nama}"/></td>
 			</tr>
 			<tr>
-				<td><form:label path="alamat">Alamat</form:label> </td>
+				<td><form:label path="alamat">Alamat</form:label></td>
 				<td><form:input path="alamat" value="${alamat}"/></td>
 			</tr>
 			<tr>
-				<td><form:label path="foto">Foto</form:label> </td>
-				<td><form:input path="foto" value="${foto}"/></td>
+				<td>Foto</td>
+				<td>
+					<img style="width:60px;" alt="" src="${foto}"><br>
+					<input type="hidden" name="old" value="${foto}">
+					<input type="file" name="file">
+				</td>
 			</tr>
 			<tr>
-				<td><form:label path="jenis_kelamin">Jenis Kelamin</form:label> </td>
-				<td><form:input path="jenis_kelamin" value="${jenis_kelamin}"/></td>
+				<td>Golongan</td>
+				<td>
+					<form:select path="golongan.idgolongan">
+						<form:options items="${daftarGolongan}"/>
+					</form:select>
+				</td>
 			</tr>
 			<tr>
-				<td><form:label path="golongan.idgolongan">Golongan</form:label> </td>
-				<td><form:input path="golongan.nama_golongan" value="${golongan}"/></td>
+				<td><form:label path="jenis_kelamin">Jenis Kelamin</form:label></td>
+				<td>
+					<form:radiobutton path="jenis_kelamin" value="Laki-Laki"/>Laki-Laki
+					<form:radiobutton path="jenis_kelamin" value="Perempuan"/>Perempuan
+				</td>
 			</tr>
+			
 			<tr>
 				<td></td>
-				<td><input type="submit" value="update"></td>
+				<td>
+					<input type="hidden" name="idpegawai" value="${idpegawai}">
+					<input type="submit" value="kirim">
+				</td>
 			</tr>
+			
 		</table>
-		<br>
 	</form:form>
+</center>
 </body>
 </html>

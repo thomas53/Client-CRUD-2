@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<center>
 	<form:form method="POST" action="/ClientServlet2/pegawai/tambah" enctype="multipart/form-data">
 		<table>
 			<tr>
@@ -45,6 +46,8 @@
 			
 		</table>
 	</form:form>
+	
+	
 	<table border=1>
 		<thead>
 			<tr>
@@ -73,5 +76,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
+</center>
 </body>
 </html>

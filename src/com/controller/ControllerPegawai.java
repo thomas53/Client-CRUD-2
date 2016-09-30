@@ -39,6 +39,7 @@ public class ControllerPegawai {
 		for (Golongan golongan : daftarGolongan) {
 			mapGolongan.put(golongan.getIdgolongan()+"", golongan.getNama_golongan());
 		}
+		
 		model.addAttribute("daftarPegawai", daftarPegawai);
 		model.addAttribute("daftarGolongan", mapGolongan);
 		
@@ -54,7 +55,6 @@ public class ControllerPegawai {
 			fotoBase64 = "data:"+foto.getContentType()+";base64,"
 				+ StringUtils.newStringUtf8(Base64.encodeBase64(foto.getBytes(), false));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		cob.setFoto(fotoBase64);
@@ -70,35 +70,54 @@ public class ControllerPegawai {
 		return "redirect:/pegawai";
 	}
 	
+	@RequestMapping(value="/pegawai/update", method = RequestMethod.POST)
+	public String editPegawai(@ModelAttribute("SpringWeb")Pegawai peg, 
+			@RequestParam("file")MultipartFile foto, 
+			@RequestParam("old")String old,
+			@RequestParam("idpegawai")int idpegawai,
+			ModelMap model) {
+		
+		String fotoBase64="";
+		if (foto.isEmpty()) {
+			fotoBase64=old;
+		}else{
+			try {
+				fotoBase64 = "data:"+foto.getContentType()+";base64,"
+					+ StringUtils.newStringUtf8(Base64.encodeBase64(foto.getBytes(), false));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		peg.setIdpegawai(idpegawai);
+		peg.setFoto(fotoBase64);
+		model.addAttribute("nama", peg.getNama());
+		model.addAttribute("alamat",peg.getAlamat());
+		model.addAttribute("jenis_kelamin", peg.getJenis_kelamin());
+		model.addAttribute("foto", peg.getFoto());
+		
+		int simpan = new ToServer().send("upd", peg);
+		return "redirect:/pegawai";
+	}
+	
 	@RequestMapping(value="/pegawai/edit",method = RequestMethod.GET)
 	public ModelAndView editPegawai(@RequestParam("id")int idpegawai,ModelMap model){
 		Pegawai peg = new ToServer().ambilPegawaiById(idpegawai);
 		
+		List<Golongan> daftarGolongan = new ArrayList<Golongan>();
+		daftarGolongan = new ToServer().ambilGolongan();
+		
+		Map<String,String> mapGolongan = new LinkedHashMap<String,String>();
+		for (Golongan golongan : daftarGolongan) {
+			mapGolongan.put(golongan.getIdgolongan()+"", golongan.getNama_golongan());
+		}
+		model.addAttribute("idpegawai", peg.getIdpegawai());
 		model.addAttribute("nama", peg.getNama());
 		model.addAttribute("alamat",peg.getAlamat());
+		model.addAttribute("daftarGolongan",mapGolongan);
 		model.addAttribute("jenis_kelamin", peg.getJenis_kelamin());
 		model.addAttribute("golongan",peg.getGolongan().getNama_golongan());
 		model.addAttribute("foto", peg.getFoto());
 		
 		return new ModelAndView("edit-pegawai", "command", new Pegawai());
-	}
-	
-	@RequestMapping(value="/uploadFile", method = RequestMethod.POST)
-	public @ResponseBody 
-	String uploadHandler(@RequestParam("nama")String name, 
-			@RequestParam("file")MultipartFile file){
-		if (!file.isEmpty()) {
-			String res="";
-			try {
-				res = "data:"+file.getContentType()+";base64,"
-					+ StringUtils.newStringUtf8(Base64.encodeBase64(file.getBytes(), false));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return "file not empty : <img src='"+ res +"'/>" ;
-		} else {
-			return "file empty";
-		}
 	}
 }
