@@ -67,20 +67,20 @@
 		<tbody>
 			<c:set var="daftarPegawai" value="${daftarPegawai}"/>
 			<c:forEach items="${daftarPegawai}" var="pegawai">
-			<tr>
-				<td><c:out value="${pegawai.nama}" /></td>
-				<td><c:out value="${pegawai.jenis_kelamin}" /></td>
-				<td><c:out value="${pegawai.alamat}" /></td>
-				<td><img style="width:60px;" alt="" src="${pegawai.foto}"></td>
-				<td><c:out value="${pegawai.golongan.gaji}" /></td>
-				<td>
-					<a href="EditData?id=${pegawai.idpegawai}">Edit</a>
-					<a href="HapusData?id=${pegawai.idpegawai}">Delete</a>					
-				</td>					
-			</tr>
-		</c:forEach>
-	</tbody>
-</table>
+				<tr>
+					<td><c:out value="${pegawai.nama}" /></td>
+					<td><c:out value="${pegawai.jenis_kelamin}" /></td>
+					<td><c:out value="${pegawai.alamat}" /></td>
+					<td><img style="width:60px;" alt="" src="${pegawai.foto}"></td>
+					<td><c:out value="${pegawai.golongan.gaji}" /></td>
+					<td>
+						<a href="EditData?id=${pegawai.idpegawai}">Edit</a>
+						<a href="HapusData?id=${pegawai.idpegawai}">Delete</a>					
+					</td>					
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 </center>
 </body>
 </html>
