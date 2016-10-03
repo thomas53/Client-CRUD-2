@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javassist.expr.NewArray;
+
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.stereotype.Controller;
@@ -27,8 +29,13 @@ import com.socket.ToServer;
 @Controller
 public class ControllerPegawai {
 	
+	@RequestMapping(value="/",method = RequestMethod.GET)
+	public String indexController(){
+		return "redirect:/pegawai";
+	}
+	
 	@RequestMapping(value="/pegawai", method = RequestMethod.GET)
-	public ModelAndView pegawai(ModelMap model) {
+	public ModelAndView pegawai() {
 		List<Pegawai> daftarPegawai = new ArrayList<Pegawai>();
 		daftarPegawai = new ToServer().ambilPegawai("get");
 		
@@ -40,10 +47,11 @@ public class ControllerPegawai {
 			mapGolongan.put(golongan.getIdgolongan()+"", golongan.getNama_golongan());
 		}
 		
-		model.addAttribute("daftarPegawai", daftarPegawai);
-		model.addAttribute("daftarGolongan", mapGolongan);
+		ModelAndView mv = new ModelAndView("pegawai","command", new Pegawai());
+		mv.addObject("listPegawai",daftarPegawai);
+		mv.addObject("listGolongan", mapGolongan);
 		
-		return new ModelAndView("pegawai", "command", new Pegawai());
+		return mv;
 	}
 	
 	@RequestMapping(value="/pegawai/tambah", method = RequestMethod.POST)
@@ -82,19 +90,13 @@ public class ControllerPegawai {
 			fotoBase64=old;
 		}else{
 			try {
-				fotoBase64 = "data:"+foto.getContentType()+";base64,"
-					+ StringUtils.newStringUtf8(Base64.encodeBase64(foto.getBytes(), false));
+				fotoBase64 = "data:"+foto.getContentType()+";base64," + StringUtils.newStringUtf8(Base64.encodeBase64(foto.getBytes(), false));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		peg.setIdpegawai(idpegawai);
 		peg.setFoto(fotoBase64);
-		model.addAttribute("nama", peg.getNama());
-		model.addAttribute("alamat",peg.getAlamat());
-		model.addAttribute("jenis_kelamin", peg.getJenis_kelamin());
-		model.addAttribute("foto", peg.getFoto());
-		
 		int simpan = new ToServer().send("upd", peg);
 		return "redirect:/pegawai";
 	}
@@ -110,14 +112,10 @@ public class ControllerPegawai {
 		for (Golongan golongan : daftarGolongan) {
 			mapGolongan.put(golongan.getIdgolongan()+"", golongan.getNama_golongan());
 		}
-		model.addAttribute("idpegawai", peg.getIdpegawai());
-		model.addAttribute("nama", peg.getNama());
-		model.addAttribute("alamat",peg.getAlamat());
-		model.addAttribute("daftarGolongan",mapGolongan);
-		model.addAttribute("jenis_kelamin", peg.getJenis_kelamin());
-		model.addAttribute("golongan",peg.getGolongan().getNama_golongan());
-		model.addAttribute("foto", peg.getFoto());
 		
-		return new ModelAndView("edit-pegawai", "command", new Pegawai());
+		ModelAndView mv = new ModelAndView("edit-pegawai","command",new Pegawai());
+		mv.addObject("peg", peg);
+		mv.addObject("listGol",mapGolongan);
+		return mv;
 	}
 }

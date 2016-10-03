@@ -27,7 +27,7 @@
 				<td>Golongan</td>
 				<td>
 					<form:select path="golongan.idgolongan">
-						<form:options items="${daftarGolongan}"/>
+						<form:options items="${listGolongan}"/>
 					</form:select>
 				</td>
 			</tr>
@@ -60,7 +60,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:set var="daftarPegawai" value="${daftarPegawai}"/>
+			<c:set var="daftarPegawai" value="${listPegawai}"/>
 			<c:forEach items="${daftarPegawai}" var="pegawai">
 				<tr>
 					<td><c:out value="${pegawai.nama}" /></td>
@@ -69,8 +69,8 @@
 					<td><img style="width:60px;" alt="" src="${pegawai.foto}"></td>
 					<td><c:out value="${pegawai.golongan.gaji}" /></td>
 					<td>
-						<a href="pegawai/edit?id=${pegawai.idpegawai}">Edit</a>
-						<a href="pegawai/hapus?id=${pegawai.idpegawai}">Delete</a>					
+						<a href="/ClientServlet2/pegawai/edit?id=${pegawai.idpegawai}">Edit</a>
+						<a href="/ClientServlet2/pegawai/hapus?id=${pegawai.idpegawai}">Delete</a>					
 					</td>					
 				</tr>
 			</c:forEach>

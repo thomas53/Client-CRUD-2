@@ -14,17 +14,17 @@
 		<table>
 			<tr>
 				<td><form:label path="nama">Nama</form:label></td>
-				<td><form:input path="nama" value="${nama}"/></td>
+				<td><form:input path="nama" value="${peg.nama}"/></td>
 			</tr>
 			<tr>
 				<td><form:label path="alamat">Alamat</form:label></td>
-				<td><form:input path="alamat" value="${alamat}"/></td>
+				<td><form:input path="alamat" value="${peg.alamat}"/></td>
 			</tr>
 			<tr>
 				<td>Foto</td>
 				<td>
-					<img style="width:60px;" alt="" src="${foto}"><br>
-					<input type="hidden" name="old" value="${foto}">
+					<img style="width:60px;" alt="" src="${peg.foto}"><br>
+					<input type="hidden" name="old" value="${peg.foto}">
 					<input type="file" name="file">
 				</td>
 			</tr>
@@ -32,7 +32,7 @@
 				<td>Golongan</td>
 				<td>
 					<form:select path="golongan.idgolongan">
-						<form:options items="${daftarGolongan}"/>
+						<form:options items="${listGol}"/>
 					</form:select>
 				</td>
 			</tr>
@@ -47,8 +47,9 @@
 			<tr>
 				<td></td>
 				<td>
-					<input type="hidden" name="idpegawai" value="${idpegawai}">
+					<input type="hidden" name="idpegawai" value="${peg.idpegawai}">
 					<input type="submit" value="kirim">
+					<input type="button" value="batal" onclick="window.location.href='/ClientServlet2/pegawai'">
 				</td>
 			</tr>
 			
